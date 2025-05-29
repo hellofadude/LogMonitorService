@@ -8,17 +8,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.app.logmonitor.entity.LogEntry;
-import com.app.logmonitor.storage.StorageFileNotFoundException;
-
 
 @Controller
 public class FileUploadController {
@@ -51,11 +47,6 @@ public class FileUploadController {
 		List<String> report = FileReportService.monitorJobs(entries);
 
 		return ResponseEntity.ok(report);
-	}
-
-	@ExceptionHandler(StorageFileNotFoundException.class)
-	public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
-		return ResponseEntity.notFound().build();
 	}
     
 }

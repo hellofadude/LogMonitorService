@@ -1,25 +1,23 @@
 package com.app.logmonitor;
 
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import com.app.logmonitor.storage.StorageFileNotFoundException;
-import org.junit.jupiter.api.BeforeEach;
-import org.mockito.MockitoAnnotations;
 
 
 class FileUploadControllerTest {
-
-    @Mock
-    private RedirectAttributes redirectAttributes;
 
     @InjectMocks
     private FileUploadController fileUploadController;
@@ -93,15 +91,5 @@ class FileUploadControllerTest {
         assertEquals(200, response.getStatusCode().value());
         assertNotNull(response.getBody());
         assertTrue(response.getBody().isEmpty(), "The report should be empty for malformed data");
-    }
-
-    @Test
-    void testHandleStorageFileNotFound() {
-        // Call the exception handler
-        ResponseEntity<?> response = fileUploadController.handleStorageFileNotFound(new StorageFileNotFoundException("File not found"));
-
-        // Verify the response
-        assertNotNull(response);
-        assertEquals(404, response.getStatusCode().value());
     }
 }

@@ -14,7 +14,7 @@ The following was discovered as part of building this project:
 
 ### To Run
 
-* Clone this repository - git clone -
+* Clone this repository - git clone https://github.com/hellofadude/LogMonitorService.git
 * cd project root
 * Run mvn spring-boot:run
 
