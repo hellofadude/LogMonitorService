@@ -1,50 +1,34 @@
 package com.app.logmonitor;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.app.logmonitor.entity.LogEntry;
-
 @Controller
 public class FileUploadController {
 
 
+	@Autowired	private FileUploadService fileUploadService;
 
 	
 	@PostMapping("/")
 	public ResponseEntity<List<String>> handleFileUpload(@RequestParam("file") MultipartFile file) {
 
-		List<LogEntry> entries = new ArrayList<>();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-		try(BufferedReader reader = new BufferedReader(
-			new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
-				String line;
-				while((line = reader.readLine()) != null) {
-					String[] parts = line.split(",", 4);
-					if (parts.length < 4) continue;
-					LocalTime time = LocalTime.parse(parts[0].trim(), formatter);
-					String jobName = parts[1].trim();
-					String status = parts[2].trim().toUpperCase();
-					String pid = parts[3].trim();
-					entries.add(new LogEntry(time, jobName, status, pid));
-				}
-				
-			} catch (Exception e) {
-				System.out.println("Failed to read file " + e.getMessage());
+		 if (file.isEmpty()) {
+            return ResponseEntity.badRequest().body(List.of("Uploaded file can not be empty."));
+        }
+		String originalFilename = file.getOriginalFilename();
+		if (originalFilename == null || !originalFilename.endsWith(".log")) {
+			return ResponseEntity.badRequest().body(List.of("Invalid file type. Please upload a .log file."));
+		}	
 
-			}
-		List<String> report = FileReportService.monitorJobs(entries);
+		
+		List<String> report = fileUploadService.handleFileUpload(file);
 
 		return ResponseEntity.ok(report);
 	}

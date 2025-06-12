@@ -1,8 +1,11 @@
 package com.app.logmonitor.entity;
 
 
-import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalTime;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import org.junit.jupiter.api.Test;
 
 
@@ -13,7 +16,7 @@ public class LogEntryTest {
     void testLogEntryInitialization() {
         LocalTime time = LocalTime.of(12, 0, 0);
         String jobName = "Job1";
-        String status = "SUCCESS";
+        String status = "START";
         String pid = "1234";
 
         LogEntry logEntry = new LogEntry(time, jobName, status, pid);
@@ -25,20 +28,6 @@ public class LogEntryTest {
         assertEquals(pid, logEntry.getPid(), "PID should match the initialized value");
     }
 
-    @Test
-    void testLogEntryGetters() {
-        LocalTime time = LocalTime.of(14, 30, 0);
-        String jobName = "Job2";
-        String status = "FAILED";
-        String pid = "5678";
-
-        LogEntry logEntry = new LogEntry(time, jobName, status, pid);
-
-        assertEquals(time, logEntry.getTime(), "getTime() should return the correct time");
-        assertEquals(jobName, logEntry.getJobName(), "getJobName() should return the correct job name");
-        assertEquals(status, logEntry.getStatus(), "getStatus() should return the correct status");
-        assertEquals(pid, logEntry.getPid(), "getPid() should return the correct PID");
-    }
 
     @Test
     void testLogEntryWithNullValues() {

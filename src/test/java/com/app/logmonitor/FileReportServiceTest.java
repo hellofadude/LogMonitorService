@@ -1,13 +1,13 @@
 package com.app.logmonitor;
 
-import org.junit.jupiter.api.Test;
-
-import com.app.logmonitor.entity.LogEntry;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
+
+import com.app.logmonitor.entity.LogEntry;
 
 public class FileReportServiceTest {
 
@@ -15,7 +15,7 @@ public class FileReportServiceTest {
     public void testMonitorJobsWithNormalDuration() {
         List<LogEntry> entries = new ArrayList<>();
         entries.add(new LogEntry(LocalTime.of(20, 10, 1, 10), "JobA", "START", "123"));
-        entries.add(new LogEntry(LocalTime.of(20, 10, 1, 10), "JobA", "END", "123"));
+        entries.add(new LogEntry(LocalTime.of(20, 14, 1, 10), "JobA", "END", "123"));
 
         List<String> report = FileReportService.monitorJobs(entries);
 
@@ -71,8 +71,8 @@ public class FileReportServiceTest {
         List<LogEntry> entries = new ArrayList<>();
         entries.add(new LogEntry(LocalTime.of(13, 20, 4, 01), "JobA", "START", "123"));
         entries.add(new LogEntry(LocalTime.of(13, 23, 3, 10), "JobA", "END", "123"));
-        entries.add(new LogEntry(LocalTime.of(15, 13, 1, 10), "JobA", "START", "123"));
-        entries.add(new LogEntry(LocalTime.of(15, 25, 1, 10), "JobA", "END", "123"));
+        entries.add(new LogEntry(LocalTime.of(15, 13, 1, 10), "JobB", "START", "166"));
+        entries.add(new LogEntry(LocalTime.of(15, 25, 1, 10), "JobB", "END", "166"));
 
         List<String> report = FileReportService.monitorJobs(entries);
 
